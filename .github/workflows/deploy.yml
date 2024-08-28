@@ -61,7 +61,7 @@ jobs:
         with:
           images: |
             name=${{ env.DHUB_IMAGE_NAME }}
-            name=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_IMAGE_NAME }}
+            name=ghcr.io/${{ env.GHCR_IMAGE_NAME }}
           tags: |
             type=edge
             type=ref,event=branch
