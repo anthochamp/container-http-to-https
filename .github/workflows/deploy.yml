@@ -1,8 +1,6 @@
 name: Docker
 
 on:
-  schedule:
-    - cron: '20 3 * * *'
   push:
     branches: [ "main" ]
     # Publish semver tags as releases.
@@ -11,6 +9,8 @@ on:
     branches: [ "main" ]
 
 env:
+  # eg. linux/amd64,linux/arm64,linux/riscv64,linux/ppc64le,linux/s390x,linux/386,linux/mips64le,linux/mips64,linux/arm/v7,linux/arm/v6
+  BUILD_PLATFORMS: linux/amd64,linux/arm64
   GHCR_IMAGE_NAME: ${{ github.repository_owner }}/${{ vars.GHCR_IMAGE_NAME }}
   DHUB_IMAGE_NAME: ${{ vars.DHUB_IMAGE_NAME }}
 
@@ -60,23 +60,22 @@ jobs:
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
         with:
           images: |
-            ${{ env.DHUB_IMAGE_NAME }}
-            ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_IMAGE_NAME }}
+            name=${{ env.DHUB_IMAGE_NAME }}
+            name=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_IMAGE_NAME }}
           tags: |
-            type=schedule
+            type=edge
             type=ref,event=branch
             type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha            
+            type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
             
       - name: Build and push Docker images
         id: build-and-push
         uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85 # v6.7.0
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.BUILD_PLATFORMS }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
