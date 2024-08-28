@@ -93,13 +93,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Update Docker Hub repository description
-        uses: peter-evans/dockerhub-description@e98e4d1628a5f3be2be7c231e50981aee98723ae # v4.0.0
-        with:
-          username: ${{ secrets.DHUB_USERNAME }}
-          password: ${{ secrets.DHUB_PASSWORD }}
-          repository: ${{ env.DHUB_IMAGE_NAME }}
-
       - name: Sign the published Docker images
         if: ${{ github.event_name != 'pull_request' }}
         env:
@@ -107,3 +100,9 @@ jobs:
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
+      - name: Update Docker Hub repository description
+        uses: peter-evans/dockerhub-description@e98e4d1628a5f3be2be7c231e50981aee98723ae # v4.0.0
+        with:
+          username: ${{ secrets.DHUB_USERNAME }}
+          password: ${{ secrets.DHUB_PASSWORD }}
+          repository: ${{ env.DHUB_IMAGE_NAME }}
