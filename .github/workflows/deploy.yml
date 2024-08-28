@@ -11,6 +11,7 @@ on:
 env:
   # eg. linux/amd64,linux/arm64,linux/riscv64,linux/ppc64le,linux/s390x,linux/386,linux/mips64le,linux/mips64,linux/arm/v7,linux/arm/v6
   BUILD_PLATFORMS: linux/amd64,linux/arm64
+  GHCR_REPO_OWNER: ${{ github.repository_owner }}
   GHCR_IMAGE_NAME: ${{ github.repository_owner }}/${{ vars.GHCR_IMAGE_NAME }}
   DHUB_IMAGE_NAME: ${{ vars.DHUB_IMAGE_NAME }}
 
@@ -47,51 +48,12 @@ jobs:
           username: ${{ secrets.DHUB_USERNAME }}
           password: ${{ secrets.DHUB_PASSWORD }}
 
-      - name: Log into GitHub Container Registry
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare GitHub Container Registry environment
+        run: echo "GHCR_IMAGE_NAME=$GH_REPO_OWNER/${GH_REPO_NAME#docker-}" >> $GITHUB_ENV
+        env: 
+          GH_REPO_OWNER: ${{ github.repository_owner }}
+          GH_REPO_NAME: ${{ github.event.repository.name }}
 
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
-        with:
-          images: |
-            name=${{ env.DHUB_IMAGE_NAME }}
-            name=ghcr.io/${{ env.GHCR_IMAGE_NAME }}
-          tags: |
-            type=edge
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
-            
-      - name: Build and push Docker images
-        id: build-and-push
-        uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85 # v6.7.0
-        with:
-          context: .
-          platforms: ${{ env.BUILD_PLATFORMS }}
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      - name: Show env
+        run: echo $GHCR_IMAGE_NAME
 
-      - name: Update Docker Hub repository description
-        uses: peter-evans/dockerhub-description@e98e4d1628a5f3be2be7c231e50981aee98723ae # v4.0.0
-        with:
-          username: ${{ secrets.DHUB_USERNAME }}
-          password: ${{ secrets.DHUB_PASSWORD }}
-          repository: ${{ env.DHUB_IMAGE_NAME }}
-
-      - name: Sign the published Docker images
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
