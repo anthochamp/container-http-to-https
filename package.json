@@ -1,5 +1,5 @@
 {
-	"name": "test",
+	"private": true,
 	"scripts": {
 		"test": "node --import=tsx --test-concurrency 1 --test tests/**/*.test.*",
 		"tsc:check": "tsc -noEmit -p ./tsconfig.json",
