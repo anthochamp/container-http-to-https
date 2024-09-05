@@ -1,0 +1,8 @@
+server_tokens off;
+
+server {
+  listen       80;
+  listen  [::]:80;
+
+  return {{ environ('_HTTP2HTTPS_REDIRECT_STATUS_CODE') }} https://$host{{ environ('_HTTP2HTTPS_REDIRECT_PORT') }}$request_uri;
+}
