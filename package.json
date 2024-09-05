@@ -13,6 +13,6 @@
 		"tsx": "4.19.0",
 		"find-up": "7.0.0",
 		"typescript": "5.5.4",
-		"lefthook": "1.7.14"
+		"lefthook": "1.7.15"
 	}
 }
