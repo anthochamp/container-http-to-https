@@ -4,5 +4,5 @@
  * single-quotes in a single-quoted string).
  */
 export function escapeSQE(expr: string): string {
-  return expr.replaceAll("'", "'\\''");
+	return expr.replaceAll("'", "'\\''");
 }

@@ -1,25 +1,25 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", ":rebaseStalePrs"],
-  "schedule": ["every weekend"],
-  "platformAutomerge": true,
-  "labels": ["dependencies"],
-  "packageRules": [
-    {
-      "description": "Automatically merge minor and patch-level updates",
-      "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true,
-      "automergeType": "branch"
-    },
-    {
-      "description": "Disable auto merge",
-      "automerge": false,
-      "matchPackagePrefixes": []
-    },
-    {
-      "description": "Disable updates",
-      "enabled": false,
-      "matchPackagePrefixes": []
-    }
-  ]
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["config:recommended", ":rebaseStalePrs"],
+	"schedule": ["every weekend"],
+	"platformAutomerge": true,
+	"labels": ["dependencies"],
+	"packageRules": [
+		{
+			"description": "Automatically merge minor and patch-level updates",
+			"matchUpdateTypes": ["minor", "patch"],
+			"automerge": true,
+			"automergeType": "branch"
+		},
+		{
+			"description": "Disable auto merge",
+			"automerge": false,
+			"matchPackagePrefixes": []
+		},
+		{
+			"description": "Disable updates",
+			"enabled": false,
+			"matchPackagePrefixes": []
+		}
+	]
 }

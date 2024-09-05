@@ -1,3 +1,0 @@
-# In POSIX sh, local is undefined. (https://www.shellcheck.net/wiki/SC3043)
-# Rationals: Most POSIX shell supports this feature.
-disable=SC3043

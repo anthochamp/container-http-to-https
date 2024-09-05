@@ -7,33 +7,33 @@ import { initSuite, kDefaultUrl, startContainer } from "./common";
 const exec = promisify(exec_);
 
 suite("redirection port", () => {
-  initSuite();
+	initSuite();
 
-  test("redirect HTTP to HTTPS on default empty HTTPS port by default", async () => {
-    await startContainer();
+	test("redirect HTTP to HTTPS on default empty HTTPS port by default", async () => {
+		await startContainer();
 
-    const { stdout } = await exec(`curl -I ${kDefaultUrl}`);
+		const { stdout } = await exec(`curl -I ${kDefaultUrl}`);
 
-    const headLines = stdout.split("\n").map((s) => s.trim());
+		const headLines = stdout.split("\n").map((s) => s.trim());
 
-    const locationHeader = headLines.find((v) => v.startsWith("Location:"));
+		const locationHeader = headLines.find((v) => v.startsWith("Location:"));
 
-    assert.equal(locationHeader, "Location: https://localhost/");
-  });
+		assert.equal(locationHeader, "Location: https://localhost/");
+	});
 
-  test("redirect HTTP to HTTPS with specific port when configured", async () => {
-    await startContainer({
-      env: {
-        HTTP2HTTPS_REDIRECT_PORT: "5678",
-      },
-    });
+	test("redirect HTTP to HTTPS with specific port when configured", async () => {
+		await startContainer({
+			env: {
+				HTTP2HTTPS_REDIRECT_PORT: "5678",
+			},
+		});
 
-    const { stdout } = await exec(`curl -I ${kDefaultUrl}`);
+		const { stdout } = await exec(`curl -I ${kDefaultUrl}`);
 
-    const headLines = stdout.split("\n").map((s) => s.trim());
+		const headLines = stdout.split("\n").map((s) => s.trim());
 
-    const locationHeader = headLines.find((v) => v.startsWith("Location:"));
+		const locationHeader = headLines.find((v) => v.startsWith("Location:"));
 
-    assert.equal(locationHeader, "Location: https://localhost:5678/");
-  });
+		assert.equal(locationHeader, "Location: https://localhost:5678/");
+	});
 });

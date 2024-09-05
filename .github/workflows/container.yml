@@ -25,12 +25,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "lts"
 
       - run: npm ci
       - run: npm test
 
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: read

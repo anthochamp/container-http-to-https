@@ -1,18 +1,18 @@
 {
-  "name": "test",
-  "scripts": {
-    "test": "node --import=tsx --test-concurrency 1 --test tests/**/*.test.*",
-    "tsc:check": "tsc -noEmit -p ./tsconfig.json",
-    "biome:check": "biome check --error-on-warnings --no-errors-on-unmatched --files-ignore-unknown=true",
-    "biome:fix": "biome check --error-on-warnings --no-errors-on-unmatched --files-ignore-unknown=true --write",
-    "prepare": "lefthook install"
-  },
-  "devDependencies": {
-    "@types/node": "22.5.1",
-    "@biomejs/biome": "1.8.3",
-    "tsx": "4.19.0",
-    "find-up": "7.0.0",
-    "typescript": "5.5.4",
-    "lefthook": "1.7.14"
-  }
+	"name": "test",
+	"scripts": {
+		"test": "node --import=tsx --test-concurrency 1 --test tests/**/*.test.*",
+		"tsc:check": "tsc -noEmit -p ./tsconfig.json",
+		"biome:check": "biome check --error-on-warnings --no-errors-on-unmatched --files-ignore-unknown=true",
+		"biome:fix": "biome check --error-on-warnings --no-errors-on-unmatched --files-ignore-unknown=true --write",
+		"prepare": "lefthook install"
+	},
+	"devDependencies": {
+		"@types/node": "22.5.1",
+		"@biomejs/biome": "1.8.3",
+		"tsx": "4.19.0",
+		"find-up": "7.0.0",
+		"typescript": "5.5.4",
+		"lefthook": "1.7.14"
+	}
 }
