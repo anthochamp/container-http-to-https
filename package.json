@@ -2,8 +2,12 @@
 	"private": true,
 	"scripts": {
 		"test": "node --import=tsx --test-concurrency 1 --test tests/**/*.test.*",
+		"tsc:check": "tsc -noEmit -p ./tsconfig.json",
+		"biome:check": "biome check --error-on-warnings",
 		"biome:fix": "biome check --write",
-		"markdownlint:fix": "markdownlint --fix",
+		"biome:fix-unsafe": "biome check --write --unsafe",
+		"markdownlint:check": "markdownlint -p .gitignore '**/*.md' '**/*.mdx'",
+		"markdownlint:fix": "markdownlint -p .gitignore --fix '**/*.md' '**/*.mdx'",
 		"postinstall": "is-ci || lefthook install"
 	},
 	"devDependencies": {
@@ -18,6 +22,7 @@
 		"@ac-essentials/tsconfig": "0.1.1",
 		"@ac-essentials/docker-cli": "0.1.2",
 		"@ac-essentials/find-git-dir": "0.1.2",
-		"@ac-essentials/misc-util": "0.1.2"
+		"@ac-essentials/misc-util": "0.1.2",
+		"@ac-essentials/biome-config": "0.1.0"
 	}
 }
