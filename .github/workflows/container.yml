@@ -129,3 +129,4 @@ jobs:
           username: ${{ secrets.DHUB_USERNAME }}
           password: ${{ secrets.DHUB_PASSWORD }}
           repository: ${{ env.DHUB_IMAGE_NAME }}
+          readme-filepath: ./CONTAINER.md
