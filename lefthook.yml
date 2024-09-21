@@ -1,18 +1,4 @@
-pre-commit:
-  parallel: true
-  commands:
-    tsc:
-      glob: "*.{ts,tsx,cts,mts}"
-      run: npm run tsc:check
-    biome:
-      glob: "*"
-      run: npm run biome:check -- {staged_files}
-    halolint:
-      glob: "*Dockerfile*"
-      run: scripts/hadolint.sh {staged_files}
-
-skip_output:
-  - meta
-  - success
-  - empty_summary
-  - execution
+remotes:
+  - git_url: git@github.com:anthochamp/config-presets
+    configs:
+      - lefthook/default.yml

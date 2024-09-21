@@ -7,10 +7,9 @@ import {
 	dockerContextShow,
 	dockerContextUse,
 	dockerImageRm,
-} from "./util/docker";
-import { findProjectRootDir } from "./util/find-project-root-dir";
-import type { EnvVars } from "./util/shell/env";
-import { waitForHttpAvailable } from "./util/wait-for-http-available";
+} from "@ac-essentials/docker-cli";
+import { findGitDir } from "@ac-essentials/find-git-dir";
+import { type EnvVars, waitForHttpAvailable } from "@ac-essentials/misc-util";
 
 export const kContainerImageName = "test-img";
 export const kContainerName = "test";
@@ -47,7 +46,7 @@ export function initSuite() {
 	let initialContext: string;
 
 	before(async () => {
-		const rootDir = await findProjectRootDir();
+		const rootDir = await findGitDir();
 
 		initialContext = await dockerContextShow();
 		await dockerContextUse("default");

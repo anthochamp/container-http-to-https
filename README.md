@@ -1,6 +1,6 @@
 #  HTTP to HTTPS redirect Web Server container
 
-A container image based on the official [nginx image](https://hub.docker.com/_/nginx) which respond to any request made on it (HTTP or HTTPS schemes) with a redirect to an equivalent URL with a HTTPS scheme and a configurable port.
+A container image based on the [official nginx image](https://hub.docker.com/_/nginx) which respond to any request made on it (HTTP or HTTPS schemes) with a redirect to an equivalent URL with a HTTPS scheme and a configurable port.
 
 ## How to use this image
 
