@@ -1,4 +1,4 @@
-FROM nginx:1.27.1-alpine3.20@sha256:a5127daff3d6f4606be3100a252419bfa84fd6ee5cd74d0feaca1a5068f97dcf
+FROM nginx:1.27.2-alpine3.20@sha256:74175cf34632e88c6cfe206897cbfe2d2fecf9bf033c40e7f9775a3689e8adc7
 
 RUN set -ex; \
 	apk add --update --no-cache jinja2-cli=~0.8.2
