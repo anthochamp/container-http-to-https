@@ -61,6 +61,10 @@ Location: https://localhost:5678/?q=search
 
 ## Configuration
 
+As an alternative to passing sensitive information via environment variables, `__FILE` may be appended to any of the listed environment variables below, causing the initialization script to load the values for those variables from files present in the container.
+
+In particular, this can be used to load values from Docker secrets stored in `/run/secrets/<secret_name>` files. For example : `HTTP2HTTPS_REDIRECT_PORT__FILE=/run/secrets/redirect_port`.
+
 ### HTTP2HTTPS_REDIRECT_PORT
 
 **Default**: *empty*
@@ -68,6 +72,8 @@ Location: https://localhost:5678/?q=search
 Configure the port used in the redirected URL. If empty, no port will be added to the URL (effectively selecting the default HTTPS port).
 
 ### HTTP2HTTPS_TEMPORARY_REDIRECT
+
+**Format**: boolean (`0` or `1`)
 
 **Default**: `0`
 
