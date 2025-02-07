@@ -4,11 +4,49 @@ Container images based on the [official nginx image](https://hub.docker.com/_/ng
 
 Sources are available on [GitHub](https://github.com/anthochamp/container-http-to-https).
 
+<!-- TOC tocDepth:2..3 chapterDepth:2..6 -->
+
+- [Image tags](#image-tags)
+- [How to use this image](#how-to-use-this-image)
+- [Configuration](#configuration)
+  - [HTTP2HTTPS_REDIRECT_PORT](#http2https_redirect_port)
+  - [HTTP2HTTPS_TEMPORARY_REDIRECT](#http2https_temporary_redirect)
+
+<!-- /TOC -->
+
 ## Image tags
 
-- `x.y.z`, `x.y` and `x` tags releases on multiple semver levels
-- `latest` tags the latest release
-- `edge` tags the image build automatically on the latest Git commit
+- `x.y.z-nginxA.B.C` tags the `x.y.z` container image version, embedded with
+the nginx `A.B.C` version.
+- `edge-nginxA.B.C` tags the container image built from the last repository
+commit, embedded with the nginx `A.B.C` version.
+
+Tags aliases :
+
+- `x.y-nginxA.B.C` aliases the latest patch version of the container image `x.y`
+major+minor version, embedded with the nginx `A.B.C` version;
+- `x-nginxA.B.C` aliases the latest minor+patch version of the container image
+`x` major version, embedded with the nginx `A.B.C` version;
+- `x.y.z` aliases the `x.y.z` container image version embedded with the latest
+nginx version (Note: only the latest container image version gets updated);
+- `x.y` aliases the latest patch version of the container image `x.y` major+minor
+version, embedded with the latest nginx release (Note: only the latest container
+image major+minor version gets updated);
+- `x` aliases the latest minor+patch version of the container image `x` major
+version, embedded with the latest nginx version (Note: only the latest container
+image major version gets updated);
+- `nginxA.B` aliases the latest container image version, embedded with the latest
+patch version of the nginx `A.B` major+minor version;
+- `nginxA` aliases the latest container image version, embedded with the latest
+minor+patch version of the nginx `A` major version;
+- `latest` aliases the latest `x.y.z-nginxA.B.C` tag;
+- `edge-nginxA.B` aliases the container image built from the last repository
+commit, embedded with the latest patch version of the nginx `A.B` major+minor
+version;
+- `edge-nginxA` aliases the container image built from the last repository
+commit, embedded with the latest minor+patch version of the nginx `A` major
+version.
+- `edge` aliases the latest `edge-nginxA.B.C` tag;
 
 ## How to use this image
 
