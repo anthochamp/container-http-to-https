@@ -28,7 +28,7 @@ jobs:
       dockerfile-dir: src
       dhub-readme-file: ./CONTAINER.md
       version: ${{ needs.get-version.outputs.version }}
-      alt-version: ${{ needs.pre-publish.outputs.acme-sh-version }}
+      alt-version: ${{ needs.pre-publish.outputs.nginx-version }}
       alt-version-prefix: nginx
       container-image-name: ${{ needs.pre-publish.outputs.container-image-name }}
     secrets:
