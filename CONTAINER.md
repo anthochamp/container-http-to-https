@@ -1,6 +1,6 @@
 # HTTP to HTTPS redirect Web Server container images
 
-Container images based on the [official nginx image](https://hub.docker.com/_/nginx) which respond to any request made on it (HTTP or HTTPS schemes) with a redirect to an equivalent URL with a HTTPS scheme and a configurable port.
+Container images based on the [official nginx image](https://hub.docker.com/_/nginx) that redirect all HTTP or HTTPS requests to the equivalent HTTPS URL, with an optional configurable port.
 
 Sources are available on [GitHub](https://github.com/anthochamp/container-http-to-https).
 
@@ -16,37 +16,22 @@ Sources are available on [GitHub](https://github.com/anthochamp/container-http-t
 
 ## Image tags
 
-- `x.y.z-nginxA.B.C` tags the `x.y.z` container image version, embedded with
-the nginx `A.B.C` version.
-- `edge-nginxA.B.C` tags the container image built from the last repository
-commit, embedded with the nginx `A.B.C` version.
+- `x.y.z-nginxA.B.C`: Container image version `x.y.z` with nginx `A.B.C`.
+- `edge-nginxA.B.C`: Latest commit build with nginx `A.B.C`.
 
-Tags aliases :
+**Tag Aliases:**
 
-- `x.y-nginxA.B.C` aliases the latest patch version of the container image `x.y`
-major+minor version, embedded with the nginx `A.B.C` version;
-- `x-nginxA.B.C` aliases the latest minor+patch version of the container image
-`x` major version, embedded with the nginx `A.B.C` version;
-- `x.y.z` aliases the `x.y.z` container image version embedded with the latest
-nginx version (Note: only the latest container image version gets updated);
-- `x.y` aliases the latest patch version of the container image `x.y` major+minor
-version, embedded with the latest nginx release (Note: only the latest container
-image major+minor version gets updated);
-- `x` aliases the latest minor+patch version of the container image `x` major
-version, embedded with the latest nginx version (Note: only the latest container
-image major version gets updated);
-- `nginxA.B` aliases the latest container image version, embedded with the latest
-patch version of the nginx `A.B` major+minor version;
-- `nginxA` aliases the latest container image version, embedded with the latest
-minor+patch version of the nginx `A` major version;
-- `latest` aliases the latest `x.y.z-nginxA.B.C` tag;
-- `edge-nginxA.B` aliases the container image built from the last repository
-commit, embedded with the latest patch version of the nginx `A.B` major+minor
-version;
-- `edge-nginxA` aliases the container image built from the last repository
-commit, embedded with the latest minor+patch version of the nginx `A` major
-version.
-- `edge` aliases the latest `edge-nginxA.B.C` tag;
+- `x.y-nginxA.B.C`: Latest patch of `x.y` (major.minor) with nginx `A.B.C`.
+- `x-nginxA.B.C`: Latest minor+patch of `x` (major) with nginx `A.B.C`.
+- `x.y.z`: Version `x.y.z` with latest nginx (only latest container version updated).
+- `x.y`: Latest patch of `x.y` (major.minor) with latest nginx (only latest container major.minor updated).
+- `x`: Latest minor+patch of `x` (major) with latest nginx (only latest container major updated).
+- `nginxA.B`: Latest container with latest patch of nginx `A.B` (major.minor).
+- `nginxA`: Latest container with latest minor+patch of nginx `A` (major).
+- `latest`: Latest `x.y.z-nginxA.B.C` tag.
+- `edge-nginxA.B`: Latest commit build with latest patch of nginx `A.B` (major.minor).
+- `edge-nginxA`: Latest commit build with latest minor+patch of nginx `A` (major).
+- `edge`: Latest `edge-nginxA.B.C` tag;
 
 ## How to use this image
 
@@ -99,20 +84,12 @@ Location: https://localhost:5678/?q=search
 
 ## Configuration
 
-As an alternative to passing sensitive information via environment variables, `__FILE` may be appended to any of the listed environment variables below, causing the initialization script to load the values for those variables from files present in the container.
-
-In particular, this can be used to load values from Docker secrets stored in `/run/secrets/<secret_name>` files. For example : `HTTP2HTTPS_REDIRECT_PORT__FILE=/run/secrets/redirect_port`.
+You can also configure sensitive values by appending `__FILE` to any supported environment variable name. When set, the container will read the variable's value from the specified file path instead of the environment. This is commonly used with Docker secrets (e.g., `HTTP2HTTPS_REDIRECT_PORT__FILE=/run/secrets/redirect_port`).
 
 ### HTTP2HTTPS_REDIRECT_PORT
 
-**Default**: *empty*
-
-Configure the port used in the redirected URL. If empty, no port will be added to the URL (effectively selecting the default HTTPS port).
+Port to use in the redirected URL. Leave empty to use the default HTTPS port (no port added).
 
 ### HTTP2HTTPS_TEMPORARY_REDIRECT
 
-**Format**: boolean (`0` or `1`)
-
-**Default**: `0`
-
-Configure if the HTTP redirect code should be a *temporary redirect* (307) instead of a *permanent redirect* (308).
+Set to `1` for HTTP 307 Temporary Redirect. Default is `0` (HTTP 308 Permanent Redirect).

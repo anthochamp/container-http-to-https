@@ -1,69 +1,56 @@
-import path from "node:path";
-import { after, afterEach, before } from "node:test";
+import * as path from "node:path";
 import {
-	dockerBuild,
+	dockerBuildxBuild,
 	dockerContainerRm,
 	dockerContainerRun,
 	dockerContextShow,
 	dockerContextUse,
 	dockerImageRm,
-} from "@ac-essentials/docker-cli";
-import { findGitDir } from "@ac-essentials/find-git-dir";
-import { type EnvVars, waitForHttpAvailable } from "@ac-essentials/misc-util";
+} from "@ac-essentials/cli";
+import {
+	type EnvVariables,
+	getRandomEphemeralPort,
+	isHttpAvailable,
+	sleep,
+} from "@ac-essentials/misc-util";
+import { afterAll, afterEach, beforeAll, vi } from "vitest";
 
-export const kContainerImageName = "test-img";
-export const kContainerName = "test";
-export const kMaxStartupDelayMs = 1000;
-export const kDefaultBindPort = 1234;
-export const kDefaultUrl = `http://localhost:${kDefaultBindPort}`;
+const srcPath = path.resolve(path.join(__dirname, "..", "src"));
 
 interface StartContainerOptions {
 	bindPort?: number;
-	env?: EnvVars;
+	env?: EnvVariables;
+	startupDelayMs?: number;
 }
 
-export async function startContainer(options?: StartContainerOptions) {
-	await dockerContainerRun(kContainerImageName, undefined, undefined, {
-		detach: true,
-		name: kContainerName,
-		publish: [`${options?.bindPort ?? kDefaultBindPort}:80`],
-		env: options?.env,
-	});
-
-	await waitForHttpAvailable(
-		`http://localhost:${kDefaultBindPort}`,
-		kMaxStartupDelayMs,
-	);
-}
-
-async function stopContainer() {
-	try {
-		await dockerContainerRm([kContainerName], { force: true });
-	} catch (_) {}
-}
-
-export function initSuite() {
+export function initSuite(
+	containerImageName: string = "test-img",
+	containerName = "test",
+) {
 	let initialContext: string;
 
-	before(async () => {
-		const rootDir = await findGitDir();
+	async function stopContainer() {
+		try {
+			await dockerContainerRm([containerName], { force: true });
+		} catch (_) {}
+	}
 
+	beforeAll(async () => {
 		initialContext = await dockerContextShow();
 		await dockerContextUse("default");
 
 		await stopContainer();
 
 		try {
-			await dockerImageRm([kContainerImageName], { force: true });
+			await dockerImageRm([containerImageName], { force: true });
 		} catch (_) {}
 
-		const srcPath = path.resolve(path.join(path.dirname(rootDir), "src"));
-		await dockerBuild(srcPath, { tags: [kContainerImageName] });
+		await dockerBuildxBuild(srcPath, { tags: [containerImageName] });
 	});
 
-	after(async () => {
+	afterAll(async () => {
 		try {
-			await dockerImageRm([kContainerImageName], { force: true });
+			await dockerImageRm([containerImageName], { force: true });
 		} catch (_) {}
 
 		try {
@@ -74,4 +61,32 @@ export function initSuite() {
 	afterEach(async () => {
 		await stopContainer();
 	});
+
+	return {
+		startContainer: async (options?: StartContainerOptions) => {
+			const bindPort = options?.bindPort ?? getRandomEphemeralPort();
+
+			await dockerContainerRun(containerImageName, undefined, undefined, {
+				detach: true,
+				name: containerName,
+				publish: [`${bindPort}:80`],
+				env: options?.env,
+			});
+
+			const url = `http://localhost:${bindPort}`;
+
+			vi.waitUntil(() => {
+				return isHttpAvailable(url);
+			});
+
+			await sleep(options?.startupDelayMs ?? 1000);
+
+			return {
+				url,
+				bindPort,
+			};
+		},
+		containerImageName,
+		containerName,
+	};
 }

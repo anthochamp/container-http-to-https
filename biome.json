@@ -1,4 +1,5 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
-	"extends": ["@ac-essentials/biome-config"]
+	"extends": ["@ac-essentials/biome-config"],
+	"root": true
 }
