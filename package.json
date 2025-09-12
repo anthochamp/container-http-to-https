@@ -1,7 +1,7 @@
 {
 	"private": true,
 	"scripts": {
-		"test": "vitest",
+		"test": "vitest run",
 		"tsc:check": "tsc -noEmit -p ./tsconfig.json",
 		"biome:check": "biome check --error-on-warnings",
 		"biome:fix": "biome check --write",
