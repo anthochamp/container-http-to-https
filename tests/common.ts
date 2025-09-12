@@ -1,3 +1,4 @@
+import { randomBytes } from "node:crypto";
 import * as path from "node:path";
 import {
 	dockerBuildxBuild,
@@ -23,11 +24,10 @@ interface StartContainerOptions {
 	startupDelayMs?: number;
 }
 
-export function initSuite(
-	containerImageName: string = "test-img",
-	containerName = "test",
-) {
+export function initSuite(containerNamePrefix = "test-") {
 	let initialContext: string;
+	const containerName = `${containerNamePrefix}${randomBytes(20).toString("hex")}`;
+	const containerImageName = `${containerName}-img`;
 
 	async function stopContainer() {
 		try {

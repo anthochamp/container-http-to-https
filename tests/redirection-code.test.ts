@@ -2,7 +2,7 @@ import { execAsync } from "@ac-essentials/misc-util";
 import { expect, suite, test } from "vitest";
 import { initSuite } from "./common";
 
-suite("redirection code", () => {
+suite.sequential("redirection code", () => {
 	const { startContainer } = initSuite();
 
 	test("redirect with 308 Permanent Redirect by default", async () => {

@@ -2,7 +2,7 @@ import { execAsync } from "@ac-essentials/misc-util";
 import { expect, suite, test } from "vitest";
 import { initSuite } from "./common";
 
-suite("redirection port", () => {
+suite.sequential("redirection port", () => {
 	const { startContainer } = initSuite();
 
 	test("redirect HTTP to HTTPS on default empty HTTPS port by default", async () => {
