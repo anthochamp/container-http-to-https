@@ -75,7 +75,7 @@ export function initSuite(containerNamePrefix = "test-") {
 
 			const url = `http://localhost:${bindPort}`;
 
-			vi.waitUntil(() => {
+			await vi.waitUntil(() => {
 				return isHttpAvailable(url);
 			});
 
