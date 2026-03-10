@@ -10,6 +10,7 @@ import {
 } from "@ac-essentials/cli";
 import {
 	type EnvVariables,
+	execAsync,
 	getRandomEphemeralPort,
 	isHttpAvailable,
 	sleep,
@@ -18,11 +19,11 @@ import { afterAll, afterEach, beforeAll, vi } from "vitest";
 
 const srcPath = path.resolve(path.join(__dirname, "..", "src"));
 
-interface StartContainerOptions {
+type StartContainerOptions = {
 	bindPort?: number;
 	env?: EnvVariables;
 	startupDelayMs?: number;
-}
+};
 
 export function initSuite(containerNamePrefix = "test-") {
 	let initialContext: string;
@@ -75,8 +76,9 @@ export function initSuite(containerNamePrefix = "test-") {
 
 			const url = `http://localhost:${bindPort}`;
 
-			await vi.waitUntil(() => {
-				return isHttpAvailable(url);
+			await vi.waitUntil(() => isHttpAvailable(url), {
+				timeout: 15000,
+				interval: 500,
 			});
 
 			await sleep(options?.startupDelayMs ?? 1000);
@@ -89,4 +91,9 @@ export function initSuite(containerNamePrefix = "test-") {
 		containerImageName,
 		containerName,
 	};
+}
+
+export async function getHeadLines(url: string): Promise<string[]> {
+	const { stdout } = await execAsync(`curl -I ${url}`, { encoding: "utf-8" });
+	return (stdout as string).split("\n").map((s) => s.trim());
 }
