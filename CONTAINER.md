@@ -15,9 +15,16 @@ See [README.md](README.md) for full documentation and configuration reference.
 
 - `x.y-nginxA.B.C`: Latest patch of `x.y` with nginx `A.B.C`.
 - `x-nginxA.B.C`: Latest minor+patch of `x` with nginx `A.B.C`.
+- `x.y.z-nginxA.B`: Version `x.y.z` with latest patch of nginx `A.B` (only latest container version updated).
+- `x.y-nginxA.B`: Latest patch of `x.y` with latest patch of nginx `A.B`.
+- `x-nginxA.B`: Latest minor+patch of `x` with latest patch of nginx `A.B`.
+- `x.y.z-nginxA`: Version `x.y.z` with latest minor+patch of nginx `A` (only latest container version updated).
+- `x.y-nginxA`: Latest patch of `x.y` with latest minor+patch of nginx `A`.
+- `x-nginxA`: Latest minor+patch of `x` with latest minor+patch of nginx `A`.
 - `x.y.z`: Version `x.y.z` with latest nginx (only latest container version updated).
-- `x.y`: Latest patch of `x.y` with latest nginx (only latest container major.minor updated).
-- `x`: Latest minor+patch of `x` with latest nginx (only latest container major updated).
+- `x.y`: Latest patch of `x.y` with latest nginx.
+- `x`: Latest minor+patch of `x` with latest nginx.
+- `nginxA.B.C`: Latest container with nginx `A.B.C`.
 - `nginxA.B`: Latest container with latest patch of nginx `A.B`.
 - `nginxA`: Latest container with latest minor+patch of nginx `A`.
 - `latest`: Latest `x.y.z-nginxA.B.C` tag.
